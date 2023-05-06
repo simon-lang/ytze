@@ -1,5 +1,5 @@
 import { range } from 'lodash'
-import { useState } from 'react'
+import { KeyboardEventHandler, useState } from 'react'
 
 const game: Record<string, Array<number | null>> = {
   Ones: [null, 0, 1, 2, 3, 4, 5, 6],
@@ -33,9 +33,9 @@ function App() {
     setTimeout(next, 500)
   }
 
-  const updatePlayers = (e: KeyboardEvent) => {
+  const updatePlayers: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === 'Enter') {
-      reset(e.currentTarget.value)
+      reset(e.currentTarget?.value)
     }
   }
 
@@ -69,9 +69,10 @@ function App() {
                     onChange={(e) => updateScore(item, Number(e.target.value))}
                     disabled={i !== current}
                   >
-                    {game[item].map((value) => (
-                      <option value={value}>{value}</option>
-                    ))}
+                    {game[item].map((value) => {
+                      // @ts-ignore
+                      return <option value={value}>{value}</option>
+                    })}
                   </select>
                 </div>
               ))}
